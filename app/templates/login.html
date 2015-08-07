@@ -1,0 +1,43 @@
+<link rel="stylesheet" type="text/css" href="../assets/css/style.css"/>
+<link rel="stylesheet" type="text/css" href="../assets/css/body.css"/>
+<script type="application/javascript">
+    function checkUser() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        if (username == "") {
+            alert("用户名不能为空");
+            return false;
+        }
+        if (password == "") {
+            alert("密码不能为空");
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+<div class="container">
+    <section id="content">
+        <form ng-submit="Submit()" onsubmit="return checkUser();">
+            <h1>游戏盒子平台</h1>
+
+            <div>
+                <input type="text" placeholder="用户名" name="username" id="username" ng-model="user.username"/>
+            </div>
+            <div>
+                <input type="password" placeholder="密码" name="password" id="password" ng-model="user.password"/>
+            </div>
+            <div class="">
+                <span class="help-block u-errormessage" id="js-server-helpinfo">&nbsp;</span></div>
+            <div>
+                <!-- <input type="submit" value="Log in" /> -->
+                <input type="submit" value="登录" class="btn btn-primary" id="js-btn-login"/>
+                <!-- <a href="#">Register</a> -->
+            </div>
+        </form>
+        <!-- form -->
+        <!-- button -->
+    </section>
+    <!-- content -->
+</div>
+<!-- container -->

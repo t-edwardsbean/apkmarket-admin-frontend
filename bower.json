@@ -1,0 +1,10 @@
+{
+  "name": "apkmarket-admin-frontend",
+  "dependencies": {
+    "angular": "~1.4.2",
+    "angular-route": "~1.4.2",
+    "angular-resource": "~1.4.2",
+    "angular-ui-router": "~0.2.14",
+    "bootstrap-css-only": "~3.2.0"
+  }
+}

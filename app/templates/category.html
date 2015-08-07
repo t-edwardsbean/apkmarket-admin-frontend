@@ -1,0 +1,183 @@
+<div menu>
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                {{navigator}}
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    查看
+                </small>
+            </h1>
+        </div>
+        <!-- /.page-header -->
+        <div class="page-content">
+            <div class="row" ng-show="show">
+                <div class="col-xs-12">
+                    <pre class="alert alert-info">目前是二级目录,一个游戏可以属于多个分类</pre>
+                    <!-- PAGE CONTENT BEGINS -->
+                    <table class="table tree-2 table-bordered table-striped table-condensed">
+                        <tbody ng-repeat="item in items">
+
+
+                        <tr class="treegrid-1 treegrid-expanded">
+                            <td><span class="treegrid-expander glyphicon glyphicon-minus"></span>{{item.name}}
+                            </td>
+                            <td>
+                                <div ng-hide="item.icon">暂无图片</div>
+                                <div ng-hide="!item.icon">
+                                    <img src="{{item.icon}}" style="width: 40px;height: 40px;">
+                                </div>
+                            </td>
+                            <td>
+                                <div ng-hide="item.color">无颜色</div>
+                                <div ng-hide="!item.color">
+                                    {{item.color}}
+                                </div>
+                            </td>
+                            <td>
+                                <div ng-show="item.isShow">显示</div>
+                                <div ng-show="!item.isShow">
+                                    不显示
+                                </div>
+                            </td>
+                            <td>
+                                {{item.sortOrder}}
+                            </td>
+                            <td>
+                                <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+                                    <button class="btn btn-xs btn-info" ng-click="EditItem(item)">
+                                        <i class="icon-edit bigger-120"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-danger"
+                                            confirmation-needed>
+                                        <i class="icon-trash bigger-120"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="treegrid-2 treegrid-parent-1" style="display: table-row;"
+                            ng-repeat="child in item.categories">
+                            <td><span class="treegrid-indent"></span><span class="treegrid-expander"></span>{{child.name}}
+                            </td>
+                            <td>
+                                <div ng-hide="child.icon">暂无图片</div>
+                                <div ng-hide="!child.icon">
+                                    <img src="{{child.icon}}" style="width: 80px;height: 80px;">
+                                </div>
+                            </td>
+                            <td>
+                                <div ng-hide="child.color">无颜色</div>
+                                <div ng-hide="!child.color">
+                                    {{child.color}}
+                                </div>
+                            </td>
+                            <td>
+                                显示
+                            </td>
+                            <td>
+                                默认
+                            </td>
+                            <td>
+
+                                <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+                                    <button class="btn btn-xs btn-info" ng-click="EditItem(child)">
+                                        <i class="icon-edit bigger-120"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-danger"
+                                            confirmation-needed>
+                                        <i class="icon-trash bigger-120"></i>
+                                    </button>
+
+                                </div>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <accordion close-others="true" ng-hide="show">
+                <accordion-group is-open="true">
+                    <accordion-heading>
+                        <a class="accordion-toggle">
+                            分类编辑
+                        </a>
+                    </accordion-heading>
+
+                    <div class="col-xs-12">
+                        <form class="form-horizontal" role="form" method="post"
+                              style="margin-top:10px;">
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"
+                                        > 分类名</label>
+
+                                <div class="col-sm-4">
+                                    <input type="text" placeholder=""
+                                           class="col-xs-12"
+                                           ng-model="editItem.name">
+                                </div>
+                                <label class="col-sm-1 control-label no-padding-right"
+                                        ></label>
+
+                                <div class="col-sm-4">
+                                    <input type="radio" ng-model="editItem.isShow" ng-value="true"
+                                            /> 显示
+                                    <input type="radio" ng-model="editItem.isShow" ng-value="false"/>不显示
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"
+                                       id="icon_label"> 图标</label>
+
+                                <div class="col-sm-4" id="icon_block">
+                                    <input type="text" placeholder="图标"
+                                           class="col-xs-12"
+                                           ng-model="editItem.icon">
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"
+                                        > 颜色</label>
+
+                                <div class="col-sm-4">
+                                    <input type="text"
+                                           class="col-xs-12"
+                                           ng-model="editItem.color">
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"
+                                        > 顺序</label>
+
+                                <div class="col-sm-4">
+                                    <input type="text"
+                                           class="col-xs-12"
+                                           ng-model="editItem.sortOrder">
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" ng-click="Update()"
+                                            type="button"
+                                            style="margin-left:110px;">确定
+                                    </button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" ng-click="ReloadRoute()"
+                                            type="button">返回
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </accordion-group>
+            </accordion>
+
+        </div>
+    </div>
+</div>

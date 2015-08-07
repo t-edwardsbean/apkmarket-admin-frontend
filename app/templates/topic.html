@@ -1,0 +1,303 @@
+<div menu>
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                {{navigator}}
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    查看
+                </small>
+                <button class="btn btn-primary pull-right" type="button" ng-click="NewTopic()">添加</button>
+
+            </h1>
+        </div>
+        <!-- /.page-header -->
+
+        <div class="page-content">
+            <div class="row" ng-show="showTopics">
+                <div class="col-xs-12">
+                    <!--<select ng-model="selectedPosition" ng-change="SelectTopics(selectedPosition)"-->
+                    <!--ng-options="position.description for position in positions">-->
+                    <!--<option value="">全部</option>-->
+                    <!--</select>-->
+                    <!-- PAGE CONTENT BEGINS -->
+                    <pre class="alert alert-info">一个专题可以在多个页面的多个位置展示,修改或者删除将影响到所有位置上的该专题</pre>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="table-responsive">
+                                <table id="sample-table-1"
+                                       class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>名称</th>
+                                        <th>图标</th>
+                                        <th>是否显示</th>
+                                        <th>更新时间</th>
+                                        <th>专题类型</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr ng-repeat="topic in selectTopics | orderBy: '-icon'">
+                                        <td>{{topic.id}}</td>
+                                        <td>{{topic.name}}</td>
+                                        <td>
+                                            <div ng-hide="topic.icon">暂无图片</div>
+                                            <div ng-hide="!topic.icon">
+                                                <img src="{{topic.icon}}" style="width: 80px;height: 80px;">
+                                            </div>
+                                        </td>
+                                        <td>{{topic.isShow}}</td>
+                                        <td>{{topic.updated | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                        <td>{{topic.topicType.description}}</td>
+                                        <td>
+                                            <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+
+                                                <button class="btn btn-xs btn-info" ng-click="EditTopic(topic)">
+                                                    <i class="icon-edit bigger-120"></i>
+                                                </button>
+
+                                                <button class="btn btn-xs btn-danger"
+                                                        ng-click="DeleteTopic(topic)" confirmation-needed>
+                                                    <i class="icon-trash bigger-120"></i>
+                                                </button>
+
+                                                <button class="btn btn-xs btn-success"
+                                                        ng-click="EditTopicPosition(topic)">
+                                                    <i class="icon-flag bigger-120"></i>
+                                                </button>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /span -->
+                    </div>
+                    <!-- /row -->
+
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+
+            <accordion close-others="true" ng-hide="showTopics">
+                <accordion-group is-open="true">
+                    <accordion-heading>
+                        <a class="accordion-toggle" ng-click="ChangePanel(item)">
+                            专题基础配置
+                        </a>
+                    </accordion-heading>
+
+                    <div class="col-xs-12">
+                        <form class="form-horizontal" role="form" method="post"
+                              style="margin-top:10px;">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"
+                                        > 类型</label>
+
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="updateSelectedType"
+                                            ng-change="SelectType(updateSelectedType)"
+                                            ng-options="type as type.name for type in types">
+                                        <option>--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"
+                                        > 名称</label>
+
+                                <div class="col-sm-4">
+                                    <input type="text" placeholder="主题名称"
+                                           class="col-xs-12" name="topic_name" id="topic_name"
+                                           ng-model="editTopic.name">
+                                </div>
+                                <label class="col-sm-1 control-label no-padding-right"
+                                        ></label>
+
+                                <div class="col-sm-4">
+                                    <input type="radio" ng-model="editTopic.isShow" ng-value="true"
+                                            /> 显示
+                                    <input type="radio" ng-model="editTopic.isShow" ng-value="false"/>不显示
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"
+                                       id="icon_label" ng-show="ShowStyle('icon')"> 图标</label>
+
+                                <div class="col-sm-4" id="icon_block">
+                                    <input type="text" placeholder="主题图标"
+                                           class="col-xs-12" name="topic_icon" id="topic_icon"
+                                           ng-show="ShowStyle('icon')"
+                                           ng-model="editTopic.icon">
+                                </div>
+                                <label class="col-sm-1 control-label no-padding-right"
+                                       id="url_label" ng-show="ShowStyle('url')">内嵌图</label>
+
+                                <div class="col-sm-4" id="url_block">
+                                    <input type="text" placeholder="内嵌图" ng-show="ShowStyle('url')"
+                                           class="col-xs-12">
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"
+                                       ng-show="ShowStyle('redirect_url')">重定向</label>
+
+                                <div class="col-sm-6" id="redirectUrl_block">
+                                    <input type="text" placeholder="主题重定向"
+                                           class="col-xs-12"
+                                           ng-show="ShowStyle('redirect_url')" ng-model="editTopic.redirectUrl">
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group" id="edit_comment_block">
+                                <label class="col-sm-1 control-label no-padding-right"
+                                       ng-show="ShowStyle('edit_comment')"
+                                        >评语</label>
+
+                                <div class="col-sm-6">
+                                                    <textarea name="edit_comment" style="width:600px;height:170px;"
+                                                              ng-show="ShowStyle('edit_comment')"
+                                                              ng-model="editTopic.editComment"></textarea>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" ng-click="Update(editTopic)"
+                                            type="button"
+                                            style="margin-left:110px;">确定
+                                    </button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" ng-click="ReloadRoute()"
+                                            type="button">返回
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </accordion-group>
+                <accordion-group is-open="false" ng-show="ShowStyle('game')">
+                    <accordion-heading>
+                        <a class="accordion-toggle">
+                            专题游戏绑定
+                        </a>
+                    </accordion-heading>
+                    <div class="col-xs-12">
+
+                        <div class="form-group">
+                            <div class="col-sm-1">
+                                <button class="btn btn-danger" ng-click="RemoveAllGames()" confirmation-needed>
+                                    删除所有
+                                </button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-warning" ng-click="ReleaseGames()">保存游戏</button>
+                            </div>
+                            <div class="col-sm-8">
+                                <label class="col-sm-1 control-label no-padding-right">游戏</label>
+                                <input type="text" placeholder="请输入游戏名称" id="game_search"
+                                       class="col-xs-5" data-provide="typeahead" searchable>
+                                <button class="btn btn-primary col-sm-1" ng-click="AddGame()"
+                                        style="margin-left: 20px;"
+                                        type="button">添加
+                                </button>
+                            </div>
+                            <div class="col-sm-2"><span>游戏数：</span><span>{{editTopic.apks.length}}</span></div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-primary" ng-click="ReloadRoute()" type="button">返回
+                                </button>
+                            </div>
+                            <div class="col-sm-4" id="game_detail"></div>
+                            <div class="col-sm-1">
+                                <input type="hidden" id="package_Name" name="package_Name" value="">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="dd" style="min-height: 400px;" id="nestable" draggable>
+                                <ol class="dd-list">
+                                    <li class="dd-item" data-id="{{apk.packageName}}"
+                                        ng-repeat="apk in editTopic.apks">
+                                        <div class="dd-handle">
+                                            <img src="{{apk.icon}}" style="width: 40px;height: 40px;">
+                                            {{apk.name}}&nbsp;&nbsp;下载量:{{apk.downloads}}
+                                            <div class="pull-right action-buttons">
+                                                <a class="blue" href="">
+                                                    <i class="icon-pencil bigger-130" confirmation-needed drag-stop-propagation></i>
+                                                </a>
+                                                <a class="red" href="">
+                                                    <i class="icon-trash bigger-130" stop-propagation="" ng-click="deleteTopicGame(apk,$index)"
+                                                       confirmation-needed drag-stop-propagation></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div>
+</div>
+
+
+<!--关联专题位置Modal-->
+<script type="text/ng-template" id="editTopicPosition.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{topic.name}}</h3>
+    </div>
+    <div class="modal-body">
+        <pre class="alert alert-info">关联专题与位置,使专题在多个位置上展示</pre>
+        <div id="tree1" class="tree tree-selectable">
+            <div class="tree-folder" style="display:none;">
+                <div class="tree-folder-header"><i class="icon-plus"></i>
+
+                    <div class="tree-folder-name"></div>
+                </div>
+                <div class="tree-folder-content"></div>
+                <div class="tree-loader" style="display: none;"></div>
+            </div>
+            <div class="tree-item" style="display:none;"><i class="icon-remove"></i>
+
+                <div class="tree-item-name"></div>
+            </div>
+            <div class="tree-folder" style="display: block;" ng-repeat="page in pages">
+                <div class="tree-folder-header"><i class="icon-minus"></i>
+
+                    <div class="tree-folder-name">{{page.description}}</div>
+                </div>
+                <div class="tree-folder-content" ng-repeat="position in page.positions">
+                    <div class="tree-item" style="display: block;">
+                        <input type="checkbox" ng-model="pages[$parent.$index].positions[$index].select">
+
+                        <div class="tree-item-name">{{position.description}}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script src="../assets/js/jquery.nestable.min.js"></script>
+<script src="../assets/js/underscore.js"></script>

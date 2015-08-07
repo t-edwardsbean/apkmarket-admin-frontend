@@ -1,0 +1,147 @@
+<div menu>
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                {{navigator}}
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    查看
+                </small>
+                <button class="btn btn-primary pull-right" type="button" ng-click="NewItem()">添加轻游</button>
+            </h1>
+        </div>
+        <!-- /.page-header -->
+        <div class="page-content">
+            <div class="row" ng-show="showItem">
+                <div class="col-xs-12">
+                    <div class="row" style="padding-top: 10px">
+                        <div class="col-xs-12">
+                            <div class="table-responsive">
+                                <table id="sample-table-1"
+                                       class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>名称</th>
+                                        <th>图标</th>
+                                        <th>下载地址</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr ng-repeat="item in items">
+                                        <td>{{item.id}}</td>
+                                        <td>{{item.name}}</td>
+                                        <td>
+                                            <div ng-hide="item.icon">暂无图片</div>
+                                            <div ng-hide="!item.icon">
+                                                <img src="{{item.icon}}" style="width: 40px;height: 40px;">
+                                            </div>
+                                        </td>
+                                        <td>{{item.url}}</td>
+                                        <td>
+                                            <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+
+                                                <button class="btn btn-xs btn-info" ng-click="EditItem(item)">
+                                                    <i class="icon-edit bigger-120"></i>
+                                                </button>
+
+                                                <button class="btn btn-xs btn-danger"
+                                                        ng-click="DeleteItem($index)" confirmation-needed>
+                                                    <i class="icon-trash bigger-120"></i>
+                                                </button>
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /span -->
+                    </div>
+                    <!-- /row -->
+
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <div class="panel-group" ng-hide="showItem" id="accordion" role="tablist"
+                 aria-multiselectable="true" style="padding-top: 10px">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion"
+                               data-target="#collapseOne"
+                               aria-expanded="true" aria-controls="collapseOne">
+                                轻游戏信息
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
+                         aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form" method="post" id="game_topic_edit"
+                                  style="margin-top:10px;">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-right"
+                                            > 名称</label>
+
+                                    <div class="col-sm-4">
+                                        <input type="text"
+                                               class="col-xs-12"
+                                               ng-model="editItem.name">
+                                    </div>
+                                    <label class="col-sm-1 control-label no-padding-right"
+                                            ></label>
+                                </div>
+                                <div class="space-4"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-right"
+                                            > 图标</label>
+
+                                    <div class="col-sm-4">
+                                        <input type="text"
+                                               class="col-xs-12"
+                                               ng-model="editItem.icon">
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-right"
+                                            > 下载链接</label>
+
+                                    <div class="col-sm-4">
+                                        <input type="text"
+                                               class="col-xs-12"
+                                               ng-model="editItem.url">
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-primary" ng-click="SaveItem()"
+                                                type="button"
+                                                style="margin-left:110px;">确定
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-primary" ng-click="ReloadRoute()"
+                                                type="button">返回
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
