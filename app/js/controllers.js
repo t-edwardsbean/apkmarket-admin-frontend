@@ -134,7 +134,10 @@ controllers.controller('TopicController',
 
         $scope.ShowStyle = function (item) {
             if ($scope.updateSelectedType != undefined) {
-                return $scope.updateSelectedType.style.indexOf(item) >= 0 && item != 'url';
+                if ($scope.updateSelectedType.style.indexOf("redirect_url") >= 0 && item == "url") {
+                    return false;
+                }
+                return $scope.updateSelectedType.style.indexOf(item) >= 0 ;
             }
         };
 
