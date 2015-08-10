@@ -226,7 +226,7 @@ controllers.controller('TopicPositionController',
     })
 
 controllers.controller('PageController',
-    function PageController($scope, $route, $resource, $modal, $log, Page, Position, host) {
+    function PageController($scope, $route, $resource, $modal, $log,$http, Page, Position, host) {
 
         $scope.navigator = '页面管理';
 
@@ -236,8 +236,10 @@ controllers.controller('PageController',
             $scope.items = response ? response : [];
             $scope.items[0].isOpen = true;
             //初始化被选中的select option
-            $scope.selectedPosition = $scope.items[0].positions[0];
-            $scope.selectTopics = $scope.selectedPosition.topics;
+            if($scope.items[0].positions != undefined) {
+                $scope.selectedPosition = $scope.items[0].positions[0];
+                $scope.selectTopics = $scope.selectedPosition.topics;
+            }
             $scope.selectedPage = $scope.items[0];
         });
 
@@ -278,6 +280,19 @@ controllers.controller('PageController',
                 if (response.message == "ok") {
                     $scope.items.splice(index, 1);
                     console.log("删除数据:" + response.message);
+                }
+            });
+        }
+
+        $scope.ReleaseOrder = function (e) {
+            var topicIds = [];
+            $(e.target).parent().children('div').children('div').children('div').children('ol').children('li').each(function (i) {
+                var topicId = $(this).attr("data-id");
+                topicIds.push(topicId);
+            });
+            $http.post(host + 'admin/pages/' + $scope.selectedPage.id + '/positions/' + $scope.selectedPosition.id + '/changeOrder', topicIds).success(function (response) {
+                if (response.message == "ok") {
+                    alert('保存成功');
                 }
             });
         }
@@ -450,6 +465,77 @@ controllers.controller('CategoryController',
         $scope.navigator = '分类管理';
 
         $scope.show = true;
+
+
+        var Item = $resource(host + "/admin/categories/:id", {id: '@id'});
+
+        Item.query(function (response) {
+            $scope.items = response ? response : [];
+        });
+
+        $scope.DeleteItem = function (index) {
+            $scope.items[index].$delete(function (response) {
+                if (response.message == "ok") {
+                    $scope.items.splice(index, 1);
+                    console.log("删除数据:" + response.message);
+                }
+            });
+        }
+
+        $scope.EditItem = function (item) {
+            $scope.show = false;
+            $scope.editItem = item;
+        };
+
+        $scope.ReloadRoute = function () {
+            $route.reload();
+        }
+
+        $scope.Update = function () {
+            $scope.editItem.$save({id: null}, function () {
+                alert('保存专题成功');
+            });
+        };
+
+        $scope.navigator = '分类管理';
+
+        $scope.show = true;
+
+
+        var Item = $resource(host + "/admin/categories/:id", {id: '@id'});
+
+        Item.query(function (response) {
+            $scope.items = response ? response : [];
+        });
+
+        $scope.DeleteItem = function (index) {
+            $scope.items[index].$delete(function (response) {
+                if (response.message == "ok") {
+                    $scope.items.splice(index, 1);
+                    console.log("删除数据:" + response.message);
+                }
+            });
+        }
+
+        $scope.EditItem = function (item) {
+            $scope.show = false;
+            $scope.editItem = item;
+        };
+
+        $scope.ReloadRoute = function () {
+            $route.reload();
+        }
+
+        $scope.Update = function () {
+            $scope.editItem.$save({id: null}, function () {
+                alert('保存专题成功');
+            });
+        };
+
+        $scope.navigator = '分类管理';
+
+        $scope.show = true;
+
 
         var Item = $resource(host + "/admin/categories/:id", {id: '@id'});
 
