@@ -23,7 +23,7 @@ directives.directive('menu', function () {
     return {
         restrict: 'A',
         transclude: true,
-        templateUrl: '../templates/menu.html'
+        templateUrl: './templates/menu.html'
     };
 });
 
@@ -51,7 +51,6 @@ directives.directive('dragStopPropagation', function () {
 directives.directive('searchable', function (host) {
     return {
         link: function (scope, element, attr) {
-
             element.typeahead({
                 source: function (query, process) {
                     $('#game_detail').hide();
@@ -87,7 +86,7 @@ directives.directive('searchable', function (host) {
                     var game = _.find(scope.games, function (p) {
                         return p.id == id;
                     });
-                    scope.selectGame = game;
+                    scope.game.selectGame = game;
                     $('#game_detail').html('游戏详情: <strong>' + game.name + ' (' + game.packageName + ')</strong>').show();
                     $("#package_Name").attr("value", game.packageName);
                     return game.name;

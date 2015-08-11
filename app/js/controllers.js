@@ -8,6 +8,8 @@ var controllers = angular.module("apkmarket.controllers", ['ui.bootstrap']);
 controllers.controller('HomeController', function HomeController($scope, $http, apiHost) {
     $scope.navigator = '控制台';
 
+    $scope.ha = {name:"parent"};
+
     $scope.ClearCache = function () {
         $http.get(apiHost + 'cache/clear').success(function (response) {
             if (response.returnData == "ok") {
@@ -21,6 +23,10 @@ controllers.controller('TopicController',
     function TopicController($scope, $route, $modal, $http, host, Topic, TopicTypes) {
 
         $scope.navigator = '专题管理';
+
+        $scope.game = {
+            selectGame:{}
+        }
 
         Topic.query(function (response) {
             $scope.topics = response ? response : [];
@@ -106,15 +112,19 @@ controllers.controller('TopicController',
         };
 
         $scope.AddGame = function () {
+            if($scope.editTopic.apks == undefined) {
+                $scope.editTopic.apks = [];
+            }
             var isDump = false;
             for (var key in $scope.editTopic.apks) {
-                if ($scope.editTopic.apks[key].packageName == $scope.selectGame.packageName) {
+                if ($scope.editTopic.apks[key] != undefined && $scope.editTopic.apks[key].packageName == $scope.game.selectGame.packageName) {
                     alert('列表中已经有该游戏');
                     isDump = true;
                 }
             }
             if (isDump == false) {
-                $scope.editTopic.apks.unshift($scope.selectGame);
+                alert('addGame获取到game:' + JSON.stringify($scope.game.selectGame))
+                $scope.editTopic.apks.unshift($scope.game.selectGame);
             }
         }
 
