@@ -8,8 +8,6 @@ var controllers = angular.module("apkmarket.controllers", ['ui.bootstrap']);
 controllers.controller('HomeController', function HomeController($scope, $http, apiHost) {
     $scope.navigator = '控制台';
 
-    $scope.ha = {name:"parent"};
-
     $scope.ClearCache = function () {
         $http.get(apiHost + 'cache/clear').success(function (response) {
             if (response.returnData == "ok") {
@@ -25,7 +23,7 @@ controllers.controller('TopicController',
         $scope.navigator = '专题管理';
 
         $scope.game = {
-            selectGame:{}
+            selectGame: {}
         }
 
         Topic.query(function (response) {
@@ -73,11 +71,9 @@ controllers.controller('TopicController',
         $scope.deleteTopicGame = function (apk, index) {
             $http.delete(host + 'admin/topics/' + $scope.editTopic.id + '/games/?packageName=' + $scope.editTopic.apks[index].packageName).
                 success(function (response) {
-                    if (response.message == "ok") {
-                        var topicIndex = $scope.editTopic.apks.indexOf(apk);
-                        $scope.editTopic.apks.splice(topicIndex, 1);
-                        console.log("删除游戏成功");
-                    }
+                    var topicIndex = $scope.editTopic.apks.indexOf(apk);
+                    $scope.editTopic.apks.splice(topicIndex, 1);
+                    console.log("删除游戏成功");
                 });
         }
 
@@ -112,7 +108,7 @@ controllers.controller('TopicController',
         };
 
         $scope.AddGame = function () {
-            if($scope.editTopic.apks == undefined) {
+            if ($scope.editTopic.apks == undefined) {
                 $scope.editTopic.apks = [];
             }
             var isDump = false;
@@ -123,7 +119,6 @@ controllers.controller('TopicController',
                 }
             }
             if (isDump == false) {
-                alert('addGame获取到game:' + JSON.stringify($scope.game.selectGame))
                 $scope.editTopic.apks.unshift($scope.game.selectGame);
             }
         }
@@ -147,7 +142,7 @@ controllers.controller('TopicController',
                 if ($scope.updateSelectedType.style.indexOf("redirect_url") >= 0 && item == "url") {
                     return false;
                 }
-                return $scope.updateSelectedType.style.indexOf(item) >= 0 ;
+                return $scope.updateSelectedType.style.indexOf(item) >= 0;
             }
         };
 
@@ -239,7 +234,7 @@ controllers.controller('TopicPositionController',
     })
 
 controllers.controller('PageController',
-    function PageController($scope, $route, $resource, $modal, $log,$http, Page, Position, host) {
+    function PageController($scope, $route, $resource, $modal, $log, $http, Page, Position, host) {
 
         $scope.navigator = '页面管理';
 
@@ -249,7 +244,7 @@ controllers.controller('PageController',
             $scope.items = response ? response : [];
             $scope.items[0].isOpen = true;
             //初始化被选中的select option
-            if($scope.items[0].positions != undefined) {
+            if ($scope.items[0].positions != undefined) {
                 $scope.selectedPosition = $scope.items[0].positions[0];
                 $scope.selectTopics = $scope.selectedPosition.topics;
             }
